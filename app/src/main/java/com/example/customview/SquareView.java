@@ -81,9 +81,9 @@ public class SquareView extends View {
         super.onDraw(canvas);
         int r = getMeasuredWidth() / 2;//也可以是getMeasuredHeight()/2,本例中我们已经将宽高设置相等了
         //圆心的横坐标为当前的View的左边起始位置+半径
-        int centerX = getLeft() + r;
+        float centerX = getRotationX() + r;
         //圆心的纵坐标为当前的View的顶部起始位置+半径
-        int centerY = getTop() + r;
+        float centerY = getRotationY() + r;
 
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
