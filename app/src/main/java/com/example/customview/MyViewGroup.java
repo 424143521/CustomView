@@ -98,12 +98,6 @@ public class MyViewGroup extends ViewGroup {
             int width = child.getMeasuredWidth();
 
             child.layout(0, curHeight, l + width, curHeight + height);
-           /* if(i==0){
-                child.layout(l, (int)getRotationY(), l + width,   height);
-            }else {
-                child.layout(l, curHeight, l + width, curHeight + height);
-                curHeight += height;
-            }*/
             curHeight += height;
 
         }

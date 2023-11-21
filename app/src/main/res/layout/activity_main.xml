@@ -6,10 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"
+        android:id="@+id/text"
+        android:text="你好"/>
     <com.example.customview.MyViewGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#ff9900">
+        android:background="#ff9900"
+        android:id="@+id/myView">
 
         <Button
             android:layout_width="100dp"
@@ -28,10 +37,16 @@
 
     </com.example.customview.MyViewGroup>
     <com.example.customview.SquareView
-        android:layout_width="match_parent"
+        android:id="@+id/squareView"
+        android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="#ff0000"
+        android:background="#ff00ff"
         app:default_size="100dp"/>
 
-
+    <com.example.customview.ArcView
+        android:id="@+id/arcView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@color/teal_200"
+        app:progress="0" />
 </androidx.appcompat.widget.LinearLayoutCompat>
