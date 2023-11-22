@@ -49,4 +49,16 @@
         android:layout_height="200dp"
         android:background="@color/teal_200"
         app:progress="0" />
+    <com.example.customview.StarView
+        android:id="@+id/startView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"/>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>

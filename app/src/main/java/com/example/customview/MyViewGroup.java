@@ -51,6 +51,7 @@ public class MyViewGroup extends ViewGroup {
         return height;
     }
 //首先重写onMeasure，实现测量子View大小以及设定ViewGroup的大小：
+    //int widthMeasureSpec, int heightMeasureSpec为父view对子view的宽度限制和高度限制
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -58,33 +59,45 @@ public class MyViewGroup extends ViewGroup {
         //注意要与measureChild区分，measureChild是对单个view进行测量
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
         int childCount = getChildCount();
 
         if (childCount == 0) {//如果没有子View,当前ViewGroup没有存在的意义，不用占用空间
             setMeasuredDimension(0, 0);
         } else {
-            //如果宽高都是包裹内容
-            if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
-                //我们将高度设置为所有子View的高度相加，宽度设为子View中最大的宽度
-                int height = getTotleHeight();
-                int width = getMaxChildWidth();
-                setMeasuredDimension(width, height);
 
-            } else if (heightMode == MeasureSpec.AT_MOST) {//如果只有高度是包裹内容
-                //宽度设置为ViewGroup自己的测量宽度，高度设置为所有子View的高度总和
-                setMeasuredDimension(widthSize, getTotleHeight());
-            } else if (widthMode == MeasureSpec.AT_MOST) {//如果只有宽度是包裹内容
-                //宽度设置为子View中宽度最大的值，高度设置为ViewGroup自己的测量值
-                setMeasuredDimension(getMaxChildWidth(), heightSize);
+            //计算下宽度和高度
+            //我们将高度设置为所有子View的高度相加，宽度设为子View中最大的宽度
+            int height = getTotleHeight();
+            int width = getMaxChildWidth();
+            //把计算下宽度和高度以及父view的限制一起传进去，返回的结果为符合限制的修正的尺寸
+            int resolvedWidth = resolveSize(width, widthMeasureSpec);
+            int resolvedHeight = resolveSize(height, heightMeasureSpec);
+           //把修正之后的尺寸存储起来
+            setMeasuredDimension(resolvedWidth, resolvedHeight);
 
-            }
         }
     }
+
+
+    //父view的限制是开发者写layout：match—parent这种属性时对子view对要求
+    //子view如何遵守父view对限制，measureSpec为父view对限制模式和宽高度
+    public static int resolveSize(int size, int measureSpec) {
+        int result;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = size;
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+
+        return result;
+
+     }
 
     //摆放子view
     @Override

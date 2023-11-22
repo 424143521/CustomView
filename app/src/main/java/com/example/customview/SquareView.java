@@ -64,16 +64,34 @@ public class SquareView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = getMySize(100, widthMeasureSpec);
         int height = getMySize(100, heightMeasureSpec);
-
         if (width < height) {
             height = width;
         } else {
             width = height;
         }
-
+        width = resolveSize(width, widthMeasureSpec);
+        height = resolveSize(height, heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
 
+    public static int resolveSize(int size, int measureSpec) {
+        int result = size;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        switch (specMode) {
+            case MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case MeasureSpec.AT_MOST:
+                result = Math.min(size, specSize);
+                break;
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
+        }
+        return result;
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         //调用父View的onDraw函数，因为View这个类帮我们实现了一些
